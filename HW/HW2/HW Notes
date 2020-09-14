@@ -1,0 +1,40 @@
+- Goal: extract the settlement prices and contract expiration dates for WTI Crude Oil
+
+- CME Globex Product Code: CL (necessary for scanning the SPAN file)
+- read in the cme file and output the data to a CL_expirations and settlements txt file with the data sorted into columns in a table
+* - see if I can improve the runtime after completing the assignment
+
+Algorithm:
+1. Copy the file to make sure it can output to the txt file [Done]
+2. alter program to copy only the type B and type 8 records to the txt file [Done]
+  Algorithm:
+  - copy in file to fin
+  - make an empty list for type B and type 8
+  - search for the type of B records
+  for line in file:
+  if type == "B"
+  - input B record into the type B list
+  else if type == "8"
+  - input 8 record into the type 8 list
+  else
+  continue
+  [will have a O(n) time since it is going through the entire list*]
+3. alter to only copy the type B CL and type 8 CL records [Done]
+4. alter program to display type B CL and type 8 CL records for the top half of the first table (Futures code, contract month, contract type, contract month and futures exp date)
+  - then work on the bottom half of first table (options code, contract type(call/put), contract month, and then options exp date) [Done]
+5. alter program to display the second table for type 81 records [Done]
+  - first half: (futures code, contract month, contract type, and settlement price)
+  - then display second half: (call option, put option, product code, product type code, option strike price, then settlement price)
+
+- check out mcKinney's book in 2.3 for string formatting: Python Language Basics => Scalar Types => Strings
+
+[B][NYM][8G][FUT][202008030000000000025000000000300003300000000000000000000010000[20200902]8G          00000000         0001000000000000 00 00 010000000000  00
+*reformat
+Ex.
+B = [0] = Product Code
+NYM = [1:4] = Exchange Acronym
+8G = [4:6] = Commodity Code (futures code)*
+FUT = [6:9] = Product Type Code (contract type)
+202008 = [9:15] = Contract month*
+03 = [15:17]
+20200902 = [72:80] = Expiration(settlement) Date (fut exp date)
